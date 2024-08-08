@@ -202,7 +202,10 @@ def myFunc(rknn_lite, IMG):
     # IMG = letterbox(IMG)
     # 强制放缩
     IMG = cv2.resize(IMG, (IMG_SIZE, IMG_SIZE))
-    outputs = rknn_lite.inference(inputs=[IMG])
+
+    # 匹配rknnlite2 2.0版本接口维度       
+    img2 = np.expand_dims(IMG, 0)
+    outputs = rknn_lite.inference(inputs=[img2], data_format=['nhwc'])
 
     input0_data = outputs[0].reshape([3, -1]+list(outputs[0].shape[-2:]))
     input1_data = outputs[1].reshape([3, -1]+list(outputs[1].shape[-2:]))
